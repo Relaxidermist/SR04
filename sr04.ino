@@ -1,3 +1,6 @@
+// Arduino code to read from the SR04
+// Datasheet available: https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf
+
 
 void initializeGPIO_SR04();
 void sendTrigger(int triggerPin, int triggerTime_ms);
@@ -11,10 +14,13 @@ void setup() {
 
 void loop() {
   sendTrigger(32, 50);
+
   Serial.println(conversion(measurePulse(30)));
+
+  delay(100);
 }
 
-// Assign GPIO
+// Assign GPIO to ECHO and TRIG pins on SR04
 void initializeGPIO_SR04()
 {
   pinMode(30, INPUT);
@@ -54,7 +60,8 @@ unsigned long measurePulse(int readPin)
   return duration_us;
 }
 
-// This function converts a microsecond duration to a distance as specified in the SR04 datasheet
+// This function converts a microsecond duration to a distance as specified in the SR04 datasheet and returns the
+// distance in cm.
 int conversion(unsigned long duration_us)
 {
   int range;
